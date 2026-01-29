@@ -9,7 +9,9 @@ const app = express();
 
 //Middleware
 app.use(express.json()); //Allows parsing json bodies
-app.use(cors()); //allows fontend talking to backend
+app.use(cors({
+  origin: "http://localhost:5173" // Allow your React app access
+}));
 
 app.use('/api/jobs', jobRoutes);
 
