@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import JobForm from "./components/JObForm.jsx";
 
 function App(){
 
@@ -18,9 +19,16 @@ function App(){
     fetchJobs();
   }, []);
 
+  const handleJobAdded = (newJob) => {
+    setJobs([newJob, ...jobs]); // Add the new job to the top of the list
+  };
+
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
       <h1>Smart Interview Tracker</h1>
+
+      <JobForm onJobAdded={handleJobAdded} />
+
       <div className="job-list">
         {
           jobs.map(job => (
