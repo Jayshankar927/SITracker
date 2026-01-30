@@ -13,7 +13,7 @@ app.use(cors({
   origin: "http://localhost:5173" // Allow your React app access
 }));
 
-app.use('/api/jobs', jobRoutes); //Routes
+app.use('/api/jobs', jobRoutes);
 
 //connect to mongodb
 mongoose.connect(process.env.MONGO_URI)
