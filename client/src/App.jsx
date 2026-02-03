@@ -9,12 +9,25 @@ function App(){
   //This calls the backend
   const fetchJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/jobs');
-      setJobs(res.data);
-    } catch (error){
-      console.log("Error retriving jobs: ", error);
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        
+        if (!userInfo) {
+            navigate('/login'); // Redirect if not logged in
+            return;
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const res = await axios.get('http://localhost:5000/api/jobs', config);
+        setJobs(res.data);
+    } catch (err) {
+        if (err.response?.status === 401) navigate('/login');
     }
-  }
+  };
 
   useEffect(() => {fetchJobs(); }, []);
 
