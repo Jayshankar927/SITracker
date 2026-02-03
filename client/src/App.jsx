@@ -35,11 +35,21 @@ function App(){
     setJobs([newJob, ...jobs]); // Add the new job to the top of the list
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('userInfo');
+    window.location.href = '/login'; // Hard refresh to clear state
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-8 text-slate-800">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Smart Interview Tracker</h1>
-        
+        <button 
+          onClick={handleLogout}
+          className="text-gray-500 hover:text-red-600 text-sm font-medium transition-colors"
+        >
+          Logout
+        </button>
         {/* Pass the function as a prop */}
         <JobForm onJobAdded={handleJobAdded} />
 

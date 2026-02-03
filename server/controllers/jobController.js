@@ -1,24 +1,27 @@
 import Job from "../models/Job.js";
 
 
-//create a new job
 export const createJob = async (req, res) => {
-    try{
-        const newJob = new Job(req.body);
+    try {
+        // req.user comes from your 'protect' middleware!
+        const newJob = new Job({
+            ...req.body,
+            createdBy: req.user._id 
+        });
         const savedJob = await newJob.save();
         res.status(201).json(savedJob);
-    }catch(error){
-        res.status(500).json({message: error.message});
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
-//get all jobs
 export const getJobs = async (req, res) => {
-    try{
-        const jobs = await Job.find().sort({createdAt: -1}); // Newest first
+    try {
+        // Only find jobs created by THIS specific user
+        const jobs = await Job.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
         res.status(200).json(jobs);
-    } catch(error){
-        res.status(500).json({message: error.message});
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
