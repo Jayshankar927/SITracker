@@ -9,23 +9,24 @@ function App(){
   //This calls the backend
   const fetchJobs = async () => {
     try {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        
-        if (!userInfo) {
-            navigate('/login'); // Redirect if not logged in
+        const storedUser = localStorage.getItem('userInfo');
+        if (!storedUser) {
+            window.location.href = '/login'; // Redirect if no user found
             return;
         }
 
+        const { token } = JSON.parse(storedUser);
+
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.token}`,
+                Authorization: `Bearer ${token}`, // Crucial: Space after 'Bearer'
             },
         };
 
         const res = await axios.get('http://localhost:5000/api/jobs', config);
         setJobs(res.data);
     } catch (err) {
-        if (err.response?.status === 401) navigate('/login');
+        console.error("Fetch error:", err.response?.data || err.message);
     }
   };
 
