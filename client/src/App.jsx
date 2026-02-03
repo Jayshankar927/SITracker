@@ -5,6 +5,7 @@ import JobForm from "./components/JObForm.jsx";
 function App(){
 
   const [jobs, setJobs] = useState([]);
+  const [userName, setUserName] = useState("");
 
   //This calls the backend
   const fetchJobs = async () => {
@@ -32,6 +33,15 @@ function App(){
 
   useEffect(() => {fetchJobs(); }, []);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userInfo');
+    if (storedUser) {
+        const { name } = JSON.parse(storedUser);
+        setUserName(name);
+    }
+    fetchJobs(); 
+  }, []);
+
   const handleJobAdded = (newJob) => {
     setJobs([newJob, ...jobs]); // Add the new job to the top of the list
   };
@@ -44,13 +54,17 @@ function App(){
   return (
     <div className="min-h-screen bg-gray-50 p-8 text-slate-800">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Smart Interview Tracker</h1>
-        <button 
-          onClick={handleLogout}
-          className="text-gray-500 hover:text-red-600 text-sm font-medium transition-colors"
-        >
-          Logout
-        </button>
+        {/* Navigation Bar Area */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Smart Interview Tracker 🚀</h1>
+          <h2 className="text-3xl font-bold">Welcome back, {userName}! 👋</h2>
+          <button 
+            onClick={handleLogout}
+            className="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg font-medium transition-colors border border-red-200"
+          >
+            Logout
+          </button>
+        </div>
         {/* Pass the function as a prop */}
         <JobForm onJobAdded={handleJobAdded} />
 
