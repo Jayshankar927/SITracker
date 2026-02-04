@@ -69,16 +69,35 @@ function App(){
         <JobForm onJobAdded={handleJobAdded} />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {jobs.map(job => (
-            <div key={job._id} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="font-bold text-lg">{job.company}</h3>
-              <p className="text-gray-600">{job.position}</p>
-              <span className="text-xs font-semibold mt-2 inline-block px-2 py-1 rounded bg-blue-50 text-blue-600">
-                {job.status}
-              </span>
-            </div>
-          ))}
-        </div>
+          {jobs.length === 0 ? (
+            <p className="col-span-full text-center text-gray-500 py-10">No applications found. Time to apply! 💼</p>
+          ) : (
+            jobs.map(job => (
+              <div key={job._id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="font-bold text-xl text-slate-800">{job.company}</h3>
+                  
+                  {/* Dynamic Badge Colors */}
+                  <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+                    job.status === 'Rejected' ? 'bg-red-100 text-red-600' : 
+                    job.status === 'Interviewing' ? 'bg-yellow-100 text-yellow-600' : 
+                    job.status === 'Accepted' ? 'bg-green-100 text-green-600' : 
+                    'bg-blue-100 text-blue-600'
+                  }`}>
+                    {job.status}
+                  </span>
+                </div>
+                
+                <p className="text-gray-600 font-medium">{job.position}</p>
+                
+                <div className="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-sm text-gray-400">
+                  <span>{new Date(job.createdAt).toLocaleDateString()}</span>
+                  {/* We will add a Delete button here next! */}
+                </div>
+              </div>
+              ))
+              )}
+          </div>
       </div>
     </div>
   );
