@@ -9,8 +9,8 @@ const jobSchema = new mongoose.Schema({
         default: 'Pending'
     },
     interviewDate: {type: Date},
-    notes: {type: String},
-    createdBy :{ type: mongoose.Schema.Types.ObjectId, ref: 'User'} //For Auth later
+    notes: {type: String, default: ''},
+    createdBy :{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true} //For Auth later
 },{timestamps: true});
 
 export default mongoose.model('Job', jobSchema);

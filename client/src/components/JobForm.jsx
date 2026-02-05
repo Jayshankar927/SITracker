@@ -81,6 +81,16 @@ const JobForm = ({ onJobAdded }) => {
                         </select>
                     </div>
 
+                    <div className="flex flex-col lg:col-span-3">
+                        <label className="text-xs font-bold text-gray-400 mb-1 ml-1 uppercase">Notes & Interview Links</label>
+                        <textarea 
+                            className="p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none h-20"
+                            placeholder="Recruiter: Sarah | Meeting link: zoom.us/j/123..."
+                            value={formData.notes}
+                            onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                        />
+                    </div>
+
                     <button type="submit" className="self-end bg-blue-600 text-white h-[46px] rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center justify-center gap-2">
                         <span>Add Application</span>
                     </button>

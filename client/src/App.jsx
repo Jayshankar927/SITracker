@@ -143,22 +143,38 @@ function App() {
             </div>
           ) : (
             filteredJobs.map(job => (
-              <div key={job._id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all group relative">
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <h3 className="font-bold text-xl text-slate-800 leading-tight">{job.company}</h3>
-                    <p className="text-blue-600 font-semibold text-sm mt-1 uppercase tracking-tight">{job.position}</p>
+              <div key={job._id} className="bg-white flex flex-col rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all group relative min-h-[220px]">
+                
+                {/* 1. Header Row: Title & Delete */}
+                <div className="p-6 pb-2 flex justify-between items-start">
+                  <div className="flex-1 pr-2">
+                    <h3 className="font-bold text-xl text-slate-800 leading-tight truncate">{job.company}</h3>
+                    <p className="text-blue-600 font-semibold text-xs mt-0.5 uppercase tracking-wider">{job.position}</p>
                   </div>
                   
                   <button 
                     onClick={() => deleteJob(job._id)}
-                    className="text-gray-300 hover:text-red-500 transition-colors p-2 bg-gray-50 rounded-lg"
+                    className="text-gray-300 hover:text-red-500 transition-colors p-2 bg-gray-50 rounded-lg shrink-0"
                   >
                     <Trash2 size={18} />
                   </button>
                 </div>
-                
-                <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-50">
+
+                <div className="px-6 flex-1">
+                  {job.notes ? (
+                    <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 h-20 overflow-y-auto custom-scrollbar">
+                      <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-wrap">
+                        {job.notes}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="h-20 flex items-center justify-center border border-dashed border-gray-100 rounded-xl">
+                      <p className="text-[10px] text-gray-300 italic">No notes added</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-6 pt-4 flex justify-between items-center mt-auto border-t border-gray-50">
                   <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg ${
                     job.status === 'Rejected' ? 'bg-red-50 text-red-600' : 
                     job.status === 'Interviewing' ? 'bg-yellow-50 text-yellow-600' : 
@@ -168,7 +184,7 @@ function App() {
                     {job.status}
                   </span>
                   <span className="text-[11px] font-bold text-gray-400">
-                    {new Date(job.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                    {new Date(job.createdAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
