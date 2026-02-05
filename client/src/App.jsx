@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import JobForm from "./components/JObForm.jsx";
+import { Trash2 } from 'lucide-react';
 
 function App(){
 
@@ -43,6 +44,24 @@ function App(){
   }, []); 
   const handleJobAdded = (newJob) => {
     setJobs([newJob, ...jobs]); // Add the new job to the top of the list
+  };
+
+  const deleteJob = async (id) => {
+    if (window.confirm("Are you sure you want to delete this application?")) {
+        try {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const config = {
+                headers: { Authorization: `Bearer ${userInfo.token}` },
+            };
+
+            await axios.delete(`http://localhost:5000/api/jobs/${id}`, config);
+            
+            // Update UI by removing the job from state
+            setJobs(jobs.filter((job) => job._id !== id));
+        } catch (err) {
+            console.error("Delete error:", err.response?.data?.message || err.message);
+        }
+    }
   };
 
   const handleLogout = () => {
@@ -96,28 +115,36 @@ function App(){
             <p className="col-span-full text-center text-gray-500 py-10">No applications found. Time to apply! 💼</p>
           ) : (
             jobs.map(job => (
-              <div key={job._id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-bold text-xl text-slate-800">{job.company}</h3>
+                <div key={job._id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all group">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="font-bold text-xl text-slate-800">{job.company}</h3>
+                      <p className="text-gray-600 font-medium">{job.position}</p>
+                    </div>
+                    
+                    {/* Delete Button - only shows clearly on hover thanks to 'group-hover' */}
+                    <button 
+                      onClick={() => deleteJob(job._id)}
+                      className="text-gray-300 hover:text-red-500 transition-colors p-1"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
                   
-                  {/* Dynamic Badge Colors */}
-                  <span className={`text-xs font-bold px-3 py-1 rounded-full ${
-                    job.status === 'Rejected' ? 'bg-red-100 text-red-600' : 
-                    job.status === 'Interviewing' ? 'bg-yellow-100 text-yellow-600' : 
-                    job.status === 'Accepted' ? 'bg-green-100 text-green-600' : 
-                    'bg-blue-100 text-blue-600'
-                  }`}>
-                    {job.status}
-                  </span>
+                  <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-50">
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+                      job.status === 'Rejected' ? 'bg-red-100 text-red-600' : 
+                      job.status === 'Interviewing' ? 'bg-yellow-100 text-yellow-600' : 
+                      job.status === 'Accepted' ? 'bg-green-100 text-green-600' : 
+                      'bg-blue-100 text-blue-600'
+                    }`}>
+                      {job.status}
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {new Date(job.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
                 </div>
-                
-                <p className="text-gray-600 font-medium">{job.position}</p>
-                
-                <div className="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-sm text-gray-400">
-                  <span>{new Date(job.createdAt).toLocaleDateString()}</span>
-                  {/* We will add a Delete button here next! */}
-                </div>
-              </div>
               ))
               )}
           </div>
