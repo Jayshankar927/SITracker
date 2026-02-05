@@ -11,8 +11,6 @@ const app = express();
 //Middleware
 app.use(express.json()); //Allows parsing json bodies
 
-const cors = require('cors');
-
 app.use(cors({
   origin: 'https://si-tracker.vercel.app',
   methods: ["GET", "POST", "PUT", "DELETE"],
