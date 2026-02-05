@@ -10,8 +10,10 @@ const app = express();
 
 //Middleware
 app.use(express.json()); //Allows parsing json bodies
+
 app.use(cors({
-  origin: "http://localhost:5173" // Allow your React app access
+  origin: '*',
+  methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
 app.use('/api/jobs', jobRoutes);

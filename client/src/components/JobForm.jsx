@@ -28,7 +28,7 @@ const JobForm = ({ onJobAdded }) => {
             };
 
             // 3. Send the POST request with the config
-            const res = await axios.post('http://localhost:5000/api/jobs', formData, config);
+            const res = await axios.post('https://smart-interview-tracker-oebc.onrender.com/api/jobs', formData, config);
             
             console.log("Success:", res.data);
             onJobAdded(res.data);

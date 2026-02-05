@@ -11,7 +11,7 @@ const Register = () => {
         e.preventDefault();
         try {
             // Hit the registration endpoint
-            const res = await axios.post('http://localhost:5000/api/auth/register', formData);
+            const res = await axios.post('https://smart-interview-tracker-oebc.onrender.com/api/auth/register', formData);
             
             // On success, the backend returns the user object + token
             localStorage.setItem('userInfo', JSON.stringify(res.data));

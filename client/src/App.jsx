@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import JobForm from "./components/JObForm.jsx";
+import JobForm from "./components/JobForm.jsx";
 import { Trash2, Search, LogOut } from 'lucide-react';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      const res = await axios.get('http://localhost:5000/api/jobs', config);
+      const res = await axios.get('https://smart-interview-tracker-oebc.onrender.com/api/jobs', config);
       setJobs(res.data);
     } catch (err) {
       console.error("Fetch error:", err.response?.data || err.message);
@@ -55,7 +55,7 @@ function App() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
 
-        await axios.delete(`http://localhost:5000/api/jobs/${id}`, config);
+        await axios.delete(`https://smart-interview-tracker-oebc.onrender.com/api/jobs/${id}`, config);
         setJobs(jobs.filter((job) => job._id !== id));
       } catch (err) {
         console.error("Delete error:", err.response?.data?.message || err.message);
