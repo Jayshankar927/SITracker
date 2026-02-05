@@ -12,7 +12,6 @@ A full-stack MERN application designed to help job seekers organize their applic
 - **Smart Search:** Instant filtering by Company name or Position.
 - **Note Management:** dedicated space for Zoom links, recruiter names, and follow-up tasks.
 - **Responsive UI:** Fully optimized for mobile and desktop with Tailwind CSS.
-- **Persistent Dark Mode:** (Optional: include if you finalized the toggle).
 
 ---
 
