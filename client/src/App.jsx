@@ -20,7 +20,7 @@ function App(){
 
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`, // Crucial: Space after 'Bearer'
+                Authorization: `Bearer ${token}`, 
             },
         };
 
@@ -31,17 +31,16 @@ function App(){
     }
   };
 
-  useEffect(() => {fetchJobs(); }, []);
-
   useEffect(() => {
     const storedUser = localStorage.getItem('userInfo');
     if (storedUser) {
         const { name } = JSON.parse(storedUser);
         setUserName(name);
+        fetchJobs(); // Only fetch if user exists
+    } else {
+        window.location.href = '/login';
     }
-    fetchJobs(); 
-  }, []);
-
+  }, []); 
   const handleJobAdded = (newJob) => {
     setJobs([newJob, ...jobs]); // Add the new job to the top of the list
   };

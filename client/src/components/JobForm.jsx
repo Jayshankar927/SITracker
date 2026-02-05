@@ -12,13 +12,31 @@ const JobForm = ({ onJobAdded }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/api/jobs', formData);
-            console.log("Success:", res.data); // See if data comes back
+            // 1. Get the token from localStorage
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            
+            if (!userInfo || !userInfo.token) {
+                alert("Session expired. Please login again.");
+                return;
+            }
+
+            // 2. Set up the config with the Bearer token
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            // 3. Send the POST request with the config
+            const res = await axios.post('http://localhost:5000/api/jobs', formData, config);
+            
+            console.log("Success:", res.data);
             onJobAdded(res.data);
             setFormData({ company: '', position: '', status: 'Pending', notes: '' });
-        } catch(err){
-            // This will tell you if it's a 400, 500, or Network Error
-            console.error("Error details:", err.response ? err.response.data : err.message);
+            
+        } catch (err) {
+            console.error("Error adding job:", err.response?.data?.message || err.message);
+            alert("Failed to add job. Check console for details.");
         }
     }
 
