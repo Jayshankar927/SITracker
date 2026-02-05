@@ -64,6 +64,30 @@ function App(){
             Logout
           </button>
         </div>
+
+        {/* --- NEW STATS BAR --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-blue-500">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Apps</p>
+            <h3 className="text-3xl font-bold text-slate-800">{jobs.length}</h3>
+          </div>
+          
+          <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-yellow-500">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Interviews</p>
+            <h3 className="text-3xl font-bold text-slate-800">
+              {jobs.filter(j => j.status === 'Interviewing').length}
+            </h3>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-500">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Accepted</p>
+            <h3 className="text-3xl font-bold text-slate-800">
+              {jobs.filter(j => j.status === 'Accepted').length}
+            </h3>
+          </div>
+        </div>
+        {/* --- END STATS BAR --- */}
+
         {/* Pass the function as a prop */}
         <JobForm onJobAdded={handleJobAdded} />
 
