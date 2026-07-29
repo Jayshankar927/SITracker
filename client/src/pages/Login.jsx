@@ -9,8 +9,8 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('https://smart-interview-tracker-oebc.onrender.com/api/auth/login', formData);
-            // Save user data and token to localStorage
+            const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const res = await axios.post(`${API}/api/auth/login`, formData);            // Save user data and token to localStorage
             localStorage.setItem('userInfo', JSON.stringify(res.data));
             navigate('/'); // Send user to dashboard
         } catch (err) {

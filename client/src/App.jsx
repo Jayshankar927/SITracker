@@ -22,10 +22,12 @@ function App() {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      const res = await axios.get('https://smart-interview-tracker-oebc.onrender.com/api/jobs', config);
+      const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await axios.get(`${API}/api/jobs`, config);
       setJobs(res.data);
     } catch (err) {
       console.error("Fetch error:", err.response?.data || err.message);
+      // eslint-disable-next-line react-hooks/immutability
       if (err.response?.status === 401) handleLogout();
     }
   };
