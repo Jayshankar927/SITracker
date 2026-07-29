@@ -23,3 +23,14 @@ A full-stack MERN application designed to help job seekers organize their applic
 
 ---
 
+## Local Setup
+- # server
+- cp server/.env.example server/.env
+- # set values, then
+- npm install
+- npm run start
+
+- # client
+- cp client/.env.example client/.env
+- npm install
+- npm run dev

@@ -11,8 +11,10 @@ const app = express();
 //Middleware
 app.use(express.json()); //Allows parsing json bodies
 
+const allowedOrigin = process.env.CORS_ORIGIN || (process.env.NODE_ENV === 'development' ? 'http://localhost:5173' : 'https://si-tracker.vercel.app');
+
 app.use(cors({
-  origin: 'https://si-tracker.vercel.app',
+  origin: allowedOrigin,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
