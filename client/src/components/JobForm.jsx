@@ -31,7 +31,6 @@ const JobForm = ({ onJobAdded }) => {
             const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
             const res = await axios.post(`${API}/api/jobs`, formData, config);
 
-            console.log("Success:", res.data);
             onJobAdded(res.data);
             setFormData({ company: '', position: '', status: 'Pending', notes: '' });
             
@@ -92,7 +91,7 @@ const JobForm = ({ onJobAdded }) => {
                         />
                     </div>
 
-                    <button type="submit" className="self-end bg-blue-600 text-white h-[46px] rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center justify-center gap-2">
+                    <button type="submit" className="self-end bg-blue-600 text-white h-11.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center justify-center gap-2">
                         <span>Add Application</span>
                     </button>
                 </div>

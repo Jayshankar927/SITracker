@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from 'axios';
 import JobForm from "./components/JobForm.jsx";
 import { Trash2, Search, LogOut } from 'lucide-react';
@@ -9,7 +9,12 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
   // 1. Unified Fetch Logic
-  const fetchJobs = async () => {
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem('userInfo');
+    window.location.href = '/login';
+  }, []);
+
+  const fetchJobs = useCallback(async () => {
     try {
       const storedUser = localStorage.getItem('userInfo');
       if (!storedUser) {
@@ -27,47 +32,47 @@ function App() {
       setJobs(res.data);
     } catch (err) {
       console.error("Fetch error:", err.response?.data || err.message);
-      // eslint-disable-next-line react-hooks/immutability
       if (err.response?.status === 401) handleLogout();
     }
-  };
+  }, [handleLogout]);
 
   // 2. Initialize App (Auth check & Data fetch)
   useEffect(() => {
-    const storedUser = localStorage.getItem('userInfo');
-    if (storedUser) {
+    const loadData = async () => {
+      const storedUser = localStorage.getItem('userInfo');
+      if (!storedUser) {
+        window.location.href = '/login';
+        return;
+      }
+
       const { name } = JSON.parse(storedUser);
       setUserName(name);
-      fetchJobs();
-    } else {
-      window.location.href = '/login';
-    }
-  }, []);
+      await fetchJobs();
+    };
+
+    loadData();
+  }, [fetchJobs]);
 
   // 3. Action Handlers
   const handleJobAdded = (newJob) => {
-    setJobs([newJob, ...jobs]);
+    setJobs((prevJobs) => [newJob, ...prevJobs]);
   };
 
   const deleteJob = async (id) => {
     if (window.confirm("Are you sure you want to delete this application?")) {
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
 
-        await axios.delete(`https://smart-interview-tracker-oebc.onrender.com/api/jobs/${id}`, config);
-        setJobs(jobs.filter((job) => job._id !== id));
+        await axios.delete(`${API}/api/jobs/${id}`, config);
+        setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
       } catch (err) {
         console.error("Delete error:", err.response?.data?.message || err.message);
       }
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('userInfo');
-    window.location.href = '/login';
   };
 
   // 4. Search Filter Logic
@@ -145,7 +150,7 @@ function App() {
             </div>
           ) : (
             filteredJobs.map(job => (
-              <div key={job._id} className="bg-white flex flex-col rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all group relative min-h-[220px]">
+              <div key={job._id} className="bg-white flex flex-col rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all group relative min-h-55">
                 
                 {/* 1. Header Row: Title & Delete */}
                 <div className="p-6 pb-2 flex justify-between items-start">

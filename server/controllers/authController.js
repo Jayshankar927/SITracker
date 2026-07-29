@@ -12,9 +12,12 @@ export const registerUser = async (req, res) => {
   const { name, email, password } = req.body; 
 
   try {
-    // 2. Add a check to see if password exists before calling the Model
-    if (!password) {
-      return res.status(400).json({ message: "Password is required" });
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
+    if (!email.includes('@')) {
+      return res.status(400).json({ message: "Please provide a valid email address" });
     }
 
     const userExists = await User.findOne({ email });

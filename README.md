@@ -24,13 +24,36 @@ A full-stack MERN application designed to help job seekers organize their applic
 ---
 
 ## Local Setup
-- # server
-- cp server/.env.example server/.env
-- # set values, then
-- npm install
-- npm run start
+1. Install dependencies for the server and frontend:
+   ```bash
+   cd server
+   npm install
+   cd ../client
+   npm install
+   ```
+2. Copy the example environment files and fill in values:
+   ```bash
+   cp server/.env.example server/.env
+   cp client/.env.example client/.env
+   ```
+3. Start the backend locally:
+   ```bash
+   cd server
+   npm run start
+   ```
+4. Start the frontend locally:
+   ```bash
+   cd ../client
+   npm run dev
+   ```
 
-- # client
-- cp client/.env.example client/.env
-- npm install
-- npm run dev
+### Environment variables
+- `server/.env` should include:
+  - `PORT`
+  - `MONGO_URI`
+  - `JWT_SECRET`
+  - `CORS_ORIGIN`
+- `client/.env` should include:
+  - `VITE_API_URL`
+
+> Do not commit `.env` files to source control. Keep both `server/.env` and `client/.env` local only.
