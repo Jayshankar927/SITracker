@@ -100,6 +100,7 @@ const JobForm = ({ onJobAdded }) => {
     );
 }
 
+// eslint-disable-next-line no-unused-vars
 const styles = {
   form: { display: 'flex', gap: '10px', marginBottom: '20px' }
 };
